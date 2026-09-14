@@ -13,7 +13,7 @@ export default function ShoePatternGroup({
   onSelectPart,
   activePart,
   onHoverPart,
-  hoveredPart,
+  hoveredPart, 
 }) {
   const wholeGLTF = useGLTF(GLB_WHOLE_URL);
   const explodedGLTF = useGLTF(GLB_EXPLODED_URL);
