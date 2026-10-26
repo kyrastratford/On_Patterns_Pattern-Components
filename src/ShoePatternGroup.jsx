@@ -46,6 +46,14 @@ export default function ShoePatternGroup({
 
     wholeGLTF.scene.traverse((child) => {
       if (child.isMesh) {
+        const rawName = child.name ? child.name.trim() : `PART_${index + 1}`;
+        const cleanLayerName = rawName.replace(/_/g, " ").trim().toUpperCase();
+
+        // 🎯 OMIT "INNER SEAM BACKER" FROM RENDERING
+        if (cleanLayerName.includes("BACKER")) {
+          return;
+        }
+
         const geom = child.geometry.clone();
         geom.applyMatrix4(child.matrixWorld);
         geom.computeBoundingBox();
@@ -56,10 +64,7 @@ export default function ShoePatternGroup({
 
         geom.center();
 
-        const rawName = child.name ? child.name.trim() : `PART_${index + 1}`;
-        const cleanLayerName = rawName.replace(/_/g, " ").trim().toUpperCase();
         const isBaseUnit = cleanLayerName === "BASE";
-
         const wholePos = [wholeCenter.x, wholeCenter.y, wholeCenter.z];
         const explodedPos = explodedPosMap.get(cleanLayerName) || wholePos;
 
